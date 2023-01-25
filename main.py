@@ -49,7 +49,7 @@ class Dropdown (nextcord.ui.Select):
         for i in languages:
             select_options.append(nextcord.SelectOption(label=languages[i], value=i))
 
-        super().__init__(placeholder="Select a language", options=select_options, delete_after=10)
+        super().__init__(placeholder="Select a language", options=select_options)
     
     async def callback(self, interaction: nextcord.Interaction):
         translated=await translation.translate(self.message.content, self.values[0], os.getenv("KEY"))
@@ -64,7 +64,7 @@ class DropdownView(nextcord.ui.View):
 async def say(interaction: nextcord.Interaction, message: nextcord.Message):
     """Sends the drop down with the languages"""
 
-    old_message = await interaction.response.send_message("Select a language", view=DropdownView(message), ephemeral=True)
+    await interaction.response.send_message("Select a language", view=DropdownView(message), ephemeral=True, delete_after=10)
 
 @client.event
 async def on_message(message):
